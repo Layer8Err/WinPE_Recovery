@@ -25,8 +25,8 @@ WinPE_Recovery folder.
 Customize the Build_Custom_RecoveryEnvironment.ps1 file as needed
 
 Current defaults are:
-> Language: EN-US
-> Time Zone: Eastern Standard Time
+* Language: EN-US
+* Time Zone: Eastern Standard Time
 
 Customize the WinRE_RestoreBackup.ps1 file as needed
 Customzie the Create_NetworkBackup.ps1 file as needed
