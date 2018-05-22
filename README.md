@@ -24,7 +24,7 @@ Once you have Windows ADK installed and a Windows 10 ISO downloaded, move the IS
 WinPE_Recovery folder.
 Customize the Build_Custom_RecoveryEnvironment.ps1 file as needed
 | Current defaults are:            |
-|----------------------------------|
+| -------------------------------- |
 | Language: EN-US                  |
 | Time Zone: Eastern Standard Time |
 
@@ -33,7 +33,7 @@ Customzie the Create_NetworkBackup.ps1 file as needed
 
 Run the Build_Custom_RecoveryEnvironment.ps1 script to create a custom recovery image.
 | Default recovery image name: |
-|------------------------------|
+| ---------------------------- |
 | > WinreMod.wim               |
 
 Once the recovery image has been created you can use it to create recovery flash drive:
