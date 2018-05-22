@@ -37,7 +37,7 @@ Default recovery image name:
 > WinreMod.wim
 
 Once the recovery image has been created you can use it to create recovery flash drive:
-> PS C:\WinPE_Recovery\ .\Image_Flash_Drive.ps1
+> PS C:\WinPE_Recovery> .\Image_Flash_Drive.ps1
 
 _Or_ you can use it with Windows Deployment Services to create a Network Bootable
 recovery environment.
