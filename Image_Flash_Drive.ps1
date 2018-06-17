@@ -1,12 +1,18 @@
 ## Image flash drive with Windows 10 Recovery Environment custom WIM
 # You MUST have Windows 10 ADK installed
 
+Write-Host "Image Flash Drive for network/local recovery"
 ##### Static Variables Change as needed #####
+$localDir = $pwd.Path
 $flashDriveLetter = 'F'
-$imageStorageFolder = 'E:\winre\images\'
-$winRECopy = $imageStorageFolder + 'WinreMod.wim'
-$winPEBuildFolder = 'E:\winre\recoverymedia'
-$adkEnvironScript = 'C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\DandISetEnv.bat'
+$flashDriveLetter = Read-Host "Flash Drive Letter (e.g. `"F`")"
+$imageStorageFolder = $localDir + '\Bin'
+$winPEBuildFolder = $localDir + '\Mount\recoverymedia'
+$adkEnvironScript = "${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\DandISetEnv.bat"
+### Read in environment_settings.xml to get customWIM name
+$settingsXMLFile = $localDir + '\' + 'environment_settings.xml'
+$xml = [xml](Get-Content $settingsXMLFile) # Read XML file
+$winRECopy = $imageStorageFolder + '\' + $xml.environment.customWIM
 ############################################
 $winPEbootWIM = $winPEBuildFolder + '\media\sources\boot.wim'
 $flashDriveLetter += ':'
@@ -55,4 +61,4 @@ Start-Sleep -Seconds 5
 MakeWinPEMedia /ufd /f "$winPEBuildFolder" $flashDriveLetter
 Write-Host "Over-writing in the (likely) event that MakeWinPEMedia partially failed." -ForegroundColor Cyan
 xcopy ($winPEBuildFolder + "\media\*.*") /s /e /f /y ($flashDriveLetter + "\")
-Write-Host "Done" -ForegroundColor Yellow
+Write-Host "...Done!" -ForegroundColor Yellow

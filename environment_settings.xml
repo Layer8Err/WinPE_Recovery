@@ -1,11 +1,11 @@
 <environment>
-	<targetOS>"Windows 10 Pro"</targetOS>
-	<customWIM>"WinreMod.wim"</customWIM>
-	<flashDriveLetter>"F"</flashDriveLetter>
-	<domain>DOMAIN</domain>
-	<domainadmin>adminuser</domainadmin>
-	<backupuser>backupuser</backupuser>
-	<backupuserpass>asdfasdfasdfasdfasdfasdfasdfasdfasdf</backupuserpass>
-	<backupserver>SERVER</backupserver>
-	<backupshare>RemoteShare</backupshare>
+  <targetOS>Windows 10 Pro</targetOS>
+  <customWIM>WinreMod.wim</customWIM>
+  <domain>DOMAIN</domain>
+  <domainadmin>domainadmin</domainadmin>
+  <backupuser>backupuser</backupuser>
+  <backupusersalt>1,2,3</backupusersalt>
+  <backupuserpass>mysecretpassword</backupuserpass>
+  <backupserver>BACKUPSERV</backupserver>
+  <backupshare>BackupShare</backupshare>
 </environment>
