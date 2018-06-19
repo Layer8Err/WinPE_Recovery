@@ -6,6 +6,7 @@
 ###############################################################################################
 
 ### Read in environment_settings.xml to get Domain and Admin info
+cd $PSScriptRoot
 $localDir = $pwd.Path
 $settingsXMLFile = $localDir + '\' + 'environment_settings.xml'
 $xml = [xml](Get-Content $settingsXMLFile) # Read XML file
@@ -23,7 +24,7 @@ $backupBlock = [ScriptBlock]::Create({
         [CmdletBinding()] Param(
             [Parameter(Position = 0, Mandatory = $true)]
             [String]$cryptedPass,
-            [Parameter(Postition = 1, Mandatory = $true)]
+            [Parameter(Position = 1, Mandatory = $true)]
             [String]$cryptKey,
             [Parameter(Position = 2, Mandatory = $true)]
             [String]$backupUser,
@@ -38,7 +39,7 @@ $backupBlock = [ScriptBlock]::Create({
             [Byte[]]$key = $bitsplitn
             return [Byte[]]$key
         }
-        [Byte[]]$key = stringToBytes $cryptKey
+        [Byte[]]$key = stringToBytes -keybitstring $cryptKey
         $encryptPass1 = [String]$cryptedPass | ConvertTo-SecureString -Key $key # Decrypt with key
         $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($encryptPass1) # rotate into store
         $backupPass = [String]([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)) # get string value
@@ -47,7 +48,7 @@ $backupBlock = [ScriptBlock]::Create({
     }
 })
 
-$backupBlock2 = [ScriptBlock]::Create($backupBlock.ToString() + "backupToServer -cryptedPass $cryptedPass -cryptKey $cryptKey -backupUser $bakUser -backupLocation $rmtShare")
+$backupBlock2 = [ScriptBlock]::Create($backupBlock.ToString() + "backupToServer -cryptedPass `"" + $cryptedPass + "`" -cryptKey `"" + $cryptKey + "`" -backupUser `"" + $bakUser + "`" -backupLocation `"" + $rmtShare + "`"")
 
 $pcname = Read-Host "Computer to back up"
 Invoke-Command -ComputerName $pcname -Credential $cred -ScriptBlock $backupBlock2 -AsJob -JobName ($pcname + '_backup')
