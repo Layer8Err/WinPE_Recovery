@@ -52,8 +52,8 @@ function recoveryEnvGui {
 
 function findPartitions {
     # This assumes network boot and single hard-drive
-    Write-Output 'SELECT DISK 0' > listdisks.txt
-    Write-Output 'LIST PARTITION' >> listdisks.txt
+    #Write-Output 'SELECT DISK 0' > listdisks.txt
+    #Write-Output 'LIST PARTITION' >> listdisks.txt
     $partsinfo = Write-Output "SELECT DISK 0`nLIST PARTITION" | diskpart.exe
     $partsfound = $true
     $partsinfo | ForEach-Object {
@@ -62,6 +62,37 @@ function findPartitions {
         }
     }
     return $partsfound
+}
+
+function getBitlockerinfo {
+    # Return bitlockerinfo on locked drive. We are only looking for the 'C:' drive if there are multiple drives
+    $bitlockerinfo = ( Get-WmiObject -Class Win32_EncryptableVolume -Namespace root/cimv2/Security/MicrosoftVolumeEncryption )
+    if ($bitlockerinfo.Length -ge 2){
+        $bitlockerinfo | ForEach-Object {
+            if ($_.DriveLetter -match 'C:'){
+                $bitlockerinfo = $_
+            }
+        }
+    }
+    return $bitlockerinfo
+}
+
+function isBitlocked {
+    # Function to check if the drive is encrypted with BitLocker (Could also use manage-bde -status | SLS "Lock Status")
+    $bitlocked = $false
+    $bitlockerinfo = getBitlockerinfo
+    if ($bitlockerinfo.ProtectionStatus -gt 0){
+        $bitlocked = $true
+    }
+    return $bitlocked
+}
+
+function unlockBitlocker {
+    # Unlock BitLocker drive C:
+    Write-Host "Please enter the BitLocker Recovery Key (e.g. 123321-456654-789987-987789-654456-321123-147963)"
+    [String]$blpass = Read-Host ">"
+    manage-bde -unlock C: -RecoveryPassword $blpass
+
 }
 
 function recoverBackup {
@@ -76,6 +107,11 @@ function recoverBackup {
     Write-Host " Asset Tag:    $assetTag"
     Write-Host " Backup:       $bakID"
     Write-Host "===========================================" -ForegroundColor Yellow
+    Start-Sleep -Seconds 3
+    if (isBitlocked){
+        Write-Host "C: drive is encrypted with BitLocker" -ForegroundColor Red
+        unlockBitlocker
+    }
     Start-Sleep -Seconds 3
     if ( findPartitions ){
         Write-Host "Recovering to existing partitions..." -ForegroundColor Cyan
@@ -95,19 +131,20 @@ function backupMenu {
         $index = 0
         Start-Sleep -Seconds 3
         Clear-Host
-        Write-Host "-------------------------------------------" -ForegroundColor Cyan
-        Write-Host "[          NETWORK IMAGE RECOVERY         ]" -ForegroundColor White -BackgroundColor DarkBlue
-        Write-Host "-------------------------------------------" -ForegroundColor Cyan
+        Write-Host "+-----------------------------------------+" -ForegroundColor Cyan
+        Write-Host -NoNewline "|" -ForegroundColor Cyan
+        Write-Host -NoNewline "          NETWORK IMAGE RECOVERY         " -ForegroundColor White -BackgroundColor DarkBlue
+        Write-Host "|" -ForegroundColor Cyan
+        Write-Host "+-----------------------------------------+" -ForegroundColor Cyan
         Write-Host "===========Select Recovery Image===========" -ForegroundColor Cyan
         $backupIDs | ForEach-Object {
             ++$index
             Write-Host "$index`t$_"
         }
         $latestBakID = $backupIDs[($backupIDs.Count - 1)]
-        Write-Host "-------------------------------------------" -ForegroundColor Cyan
-        Write-Host "     Type 'exit' to launch Recovery GUI" -ForegroundColor Yellow
-        Write-Host " Recovery GUI only supports local recovery" -ForegroundColor Yellow
-        Write-Host "-------------------------------------------" -ForegroundColor Cyan
+        Write-Host "+-----------------------------------------+" -ForegroundColor Cyan
+        Write-Host "|    Type 'exit' to launch Recovery GUI   |" -ForegroundColor Yellow
+        Write-Host "+-----------------------------------------+" -ForegroundColor Cyan
         $backupOK = $false
         try {
             [INT]$choice = Read-Host ">"
