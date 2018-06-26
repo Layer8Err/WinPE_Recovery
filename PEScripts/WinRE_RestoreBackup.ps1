@@ -91,8 +91,8 @@ function unlockBitlocker {
     # Unlock BitLocker drive C:
     Write-Host "Please enter the BitLocker Recovery Key (e.g. 123321-456654-789987-987789-654456-321123-147963)"
     [String]$blpass = Read-Host ">"
+    # BitLocker will unlock C: it will still be unlocked after reboot
     manage-bde -unlock C: -RecoveryPassword $blpass
-
 }
 
 function recoverBackup {

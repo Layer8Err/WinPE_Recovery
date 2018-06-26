@@ -28,6 +28,12 @@ https://www.microsoft.com/en-us/software-download/windows10
 When you run the Media creation tool, you will be creating "installation media for another PC"
 and selecting the "ISO file" option.
 
+### Backup file share
+
+You should already have a network file-share intended to store backup images.
+You will need credentials to connect to the file-share. It is recommended that you test the
+connection to your backup file share before you configure your environment settings.
+
 ## Preparing your build environment
 
 Once you have Windows ADK installed and a Windows 10 ISO downloaded, move the ISO to the
@@ -77,9 +83,26 @@ PS C:\WinPE_Recovery> .\Make_WinPE_Recovery.ps1
 * Default recovery image name: is "__WinreMod.wim__"
 * Recovery image is stored in the "__Bin__" folder
 
-## Using your custom WinPE Image
+## Creating a backup image
+
+You can use ```Remote_NetworkBackup.ps1``` to create a backup image of a remote PC
+on the backup share defined in ```environment_settings.xml```.
+This script uses WinRM to create a backup job on the remote PC.
+Backups are created using ```WBADMIN``` which uses VSS to create a snapshot of the drive.
+Because these backups are selective, differential backups, they are not intended for
+forensic use. These block-level backups are intended to be used for fast backups and quick
+recoveries.
+
+You can use ```Get-Job``` from the PowerShell terminal to list the status of the backup job. If jobs are completing very
+quickly, you may want to verify that your settings are correct.
+
+__Because remote backups are made when a PC is booted into Windows, the backup image is not
+encrypted with BitLocker even if the PC being backed up is encrypted.__
+
+## Booting your custom WinPE Image
 
 ### Creating Recovery ISO
+
 Once the recovery image (e.g. ```WinreMod.wim```) has been created you can use it to create a bootable ISO.
 ```
 PS C:\WinPE_Recovery> .\Build_WinPE_ISO.ps1
@@ -93,9 +116,38 @@ Once the recovery image has been created you can use it to create recovery flash
 ```
 PS C:\WinPE_Recovery> .\Image_Flash_Drive.ps1
 ```
-Make sure that your flash drive is properly formatted before you attemt to image it.
+Make sure that your flash drive is properly formatted before you attempt to image it.
 
 ### WDS/MDT/SCCM
 
 You can use the recovery image with Windows Deployment Services and Microsoft Deployment tools or SCCM to allow computers to boot
 into your customized recovery environment via network boot (PXE).
+
+## Restoring an image
+
+_"If you haven't tested your backups, you don't have any backups." ~ Anon_
+
+### From locally attached storage
+
+Once you have booted into your Windows PE Recovery environment, allow the automated network script to launch
+the "generic recovery tools GUI".
+The Windows PE Recovery Environment has a GUI for recovering from locally attached storage.
+
+1. From the Windows Recovery Environment select your keyboard layout
+2. Select "Troubleshoot"
+3. Select "System Image Recovery"
+4. Choose your target operating system to recover
+5. Make sure that your external recovery drive is attached
+6. Select the backup you want to use
+7. Click "Next" to begin the restore process
+
+### From network share
+
+As long as your backup is stored in the network share defined in your ```environment_settings.xml``` file it should
+automatically be detected when you boot into your Custom Windows PE Recovery Environment.
+
+1. Select which backup you want to restore from (e.g. type "1" and hit "ENTER")
+2. You will be prompted to confirm that you want to continue with the image restore. Hit "y" and "ENTER" to continue.
+3. If the drive is encrypted with BitLocker, you will need to enter the BitLocker recovery key. __The drive will no longer be encrypted after the recovery process__.
+4. ```WBADMIN``` will begin the recovery operation.
+5. When the recovery operation is complete, the PC will reboot.
