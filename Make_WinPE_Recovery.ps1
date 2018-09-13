@@ -3,6 +3,8 @@
 # Microsoft-provided MediaCreationTool
 # Build settings are imported from environment_settings.xml
 
+$adkPEPath = "${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs"
+
 Write-Host "----------------------------------------------"
 Write-Host "Starting Recovery Environment build process..." -ForegroundColor White
 Write-Host "----------------------------------------------"
@@ -106,43 +108,43 @@ if ( (Test-Path -Path $pathToISO) -eq $false){
     Write-Host "Injecting packages into WinRE..." -ForegroundColor White
     Write-Host "----------------------------------------------"
     Write-Host "Injecting WMI package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-WMI.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-WMI_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-WMI.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-WMI_en-us.cab"
     Write-Host "Injecting NetFX package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-NetFX.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-NetFX_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-NetFX.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-NetFX_en-us.cab"
     Write-Host "Injecting Scripting package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-Scripting.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-Scripting_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-Scripting.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-Scripting_en-us.cab"
     Write-Host "Injecting PowerShell package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-PowerShell.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-PowerShell_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-PowerShell.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-PowerShell_en-us.cab"
     Write-Host "Injecting StorageWMI package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-StorageWMI.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-StorageWMI_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-StorageWMI.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-StorageWMI_en-us.cab"
     Write-Host "Injecting DISM Cmdlets package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-DismCmdlets.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-DismCmdlets_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-DismCmdlets.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-DismCmdlets_en-us.cab"
     Write-Host "Injecting Secure Boot package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-SecureBootCmdlets.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-SecureBootCmdlets.cab"
     Write-Host "Injecting Secure Startup package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-SecureStartup.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-SecureStartup_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-SecureStartup.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-SecureStartup_en-us.cab"
     Write-Host "Injecting Dot3 service package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-Dot3Svc.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-Dot3Svc_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-Dot3Svc.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-Dot3Svc_en-us.cab"
     Write-Host "Injecting RNDIS (USB-Ethernet adapter) package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-RNDIS.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-RNDIS_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-RNDIS.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-RNDIS_en-us.cab"
     Write-Host "Injecting WDS tools package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-WDS-Tools.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-WDS-Tools_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-WDS-Tools.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-WDS-Tools_en-us.cab"
     Write-Host "Injecting Win ReCfg package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-WinReCfg.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-WinReCfg_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-WinReCfg.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-WinReCfg_en-us.cab"
     Write-Host "Injecting Enhanced Storage package..." -ForegroundColor Cyan
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\WinPE-EnhancedStorage.cab"
-    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs\en-us\WinPE-EnhancedStorage_en-us.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\WinPE-EnhancedStorage.cab"
+    Dism /Add-Package /Image:$mountWinRETgt /PackagePath:"$adkPEPath\en-us\WinPE-EnhancedStorage_en-us.cab"
 
     Write-Host "------------------------------------------------------------------" -ForegroundColor White
     Write-Host "Creating file structure for custon Windows Recovery Environment..." -ForegroundColor Cyan
