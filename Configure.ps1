@@ -58,7 +58,6 @@ function changeElement ($element){
         $newSecureStringYN = Read-Host "Set new encrypted string? [y/N]"
         if ($newSecureStringYN.Substring(0,1).ToLower() -eq 'y'){
             $secureString = Read-Host "Backup User Password" -AsSecureString
-            #$encryptedString = $secureString | ConvertFrom-SecureString -Key $key
             $encryptedString = $secureString | ConvertFrom-SecureString -Key (stringToBytes($xml.environment.backupusersalt))
             $xml.environment.($element.Name) = [String]$encryptedString
         }

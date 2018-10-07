@@ -1,0 +1,16 @@
+# Local Configuration file
+environment_settings.xml
+
+# Mount Folder
+Mount/install/
+Mount/recoveryiso/
+Mount/recoverymedia/
+Mount/winre/
+
+# Windows images and configured binaries
+Bin/*.wim
+Bin/*.iso
+Bin/*.exe
+
+# Custom Drivers
+Bin/Drivers/

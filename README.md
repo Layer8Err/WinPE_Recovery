@@ -5,6 +5,7 @@ Build a Windows 10 recovery environment with support for network-based image rec
 These scripts have been tested with:
 * Windows 10 Pro (x64) build 16299 and Windows ADK 1709.
 * Windows 10 Pro (x64) build 17134 and Windows ADK 1803.
+* Windows 10 Pro (x64) build 17763 and Windows ADK 1809.
 
 ## Requirements
 
@@ -16,6 +17,24 @@ You can download Windows ADK from Microsoft's website:
 https://docs.microsoft.com/en-us/windows-hardware/get-started/adk-install
 
 Make sure to install the same ADK version as your target Windows version
+
+You will need to install ADK with:
+* Deployment Tools (DISM)
+* Windows Preinstallation Environment (if pre 1809)
+```
+adksetup.exe /Features OptionId.DeploymentTools /norestart /quiet /ceip off
+```
+
+### Windows PE
+
+As of Windows 10 (1809) the Windows Preinstallation Environment (PE) is released separately from the Assessment and Deployment Kit (ADK).
+
+You can download the Windows PE add-on for the ADK from Microsoft's website:
+https://go.microsoft.com/fwlink/?linkid=2022233
+
+```
+adkwinpesetup.exe /Features OptionId.WindowsPreinstallationEnvironment /norestart /quiet /ceip off
+```
 
 ### Windows 10 ISO
 
@@ -58,16 +77,16 @@ storage interfaces, you can place uncompressed driver files into this folder.
 
 ### Additional Configuration
 
-You will want to customize ```Make_WinPE_Recovery.ps1``` as needed before
+You may want to customize ```Make_WinPE_Recovery.ps1``` as needed before
 generating your custom WinPE image file. 
 
 Current defaults are:
 * Language: EN-US
 * Time Zone: Eastern Standard Time
 
-You will also want to customize any additional sciprts as needed:
-* Customize the ```PEScripts\WinRE_RestoreBackup.ps1``` file as needed
-* Customzie the ```Create_NetworkBackup.ps1``` file as needed
+Settings defined in ```environment_settings.xml``` will be used by these files:
+* ```PEScripts\WinRE_RestoreBackup.ps1```
+* ```Remove_NetworkBackup.ps1```
 
 ## Building your custom WinPE Image
 

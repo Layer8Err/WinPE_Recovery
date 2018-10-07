@@ -52,8 +52,6 @@ function recoveryEnvGui {
 
 function findPartitions {
     # This assumes network boot and single hard-drive
-    #Write-Output 'SELECT DISK 0' > listdisks.txt
-    #Write-Output 'LIST PARTITION' >> listdisks.txt
     $partsinfo = Write-Output "SELECT DISK 0`nLIST PARTITION" | diskpart.exe
     $partsfound = $true
     $partsinfo | ForEach-Object {
@@ -88,10 +86,9 @@ function isBitlocked {
 }
 
 function unlockBitlocker {
-    # Unlock BitLocker drive C:
+    # Use BitLocker to unlock drive C: it will still be unlocked after reboot
     Write-Host "Please enter the BitLocker Recovery Key (e.g. 123321-456654-789987-987789-654456-321123-147963)"
     [String]$blpass = Read-Host ">"
-    # BitLocker will unlock C: it will still be unlocked after reboot
     manage-bde -unlock C: -RecoveryPassword $blpass
 }
 
@@ -177,7 +174,6 @@ function backupMenu {
     } else {
         Write-Host "No recovery images found on $remoteShare" -ForegroundColor Red
         Write-Host "for this PC: $assetTag" -ForegroundColor Red
-        #Start-Process powershell
         cmd /c '%SYSTEMROOT%\System32\startnet.cmd'
         Write-Host "Launching generic recovery tools GUI..." -ForegroundColor Cyan
         Start-Sleep -Seconds 4
