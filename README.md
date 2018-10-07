@@ -22,7 +22,7 @@ You will need to install ADK with:
 * Deployment Tools (DISM)
 * Windows Preinstallation Environment (if pre 1809)
 ```
-adksetup.exe /Features OptionId.DeploymentTools /norestart /quiet /ceip off
+PS C:\WinPE_Recovery\Bin> .\adksetup.exe /Features OptionId.DeploymentTools /norestart /quiet /ceip off
 ```
 
 ### Windows PE
@@ -33,7 +33,7 @@ You can download the Windows PE add-on for the ADK from Microsoft's website:
 https://go.microsoft.com/fwlink/?linkid=2022233
 
 ```
-adkwinpesetup.exe /Features OptionId.WindowsPreinstallationEnvironment /norestart /quiet /ceip off
+PS C:\WinPE_Recovery\Bin> .\adkwinpesetup.exe /Features OptionId.WindowsPreinstallationEnvironment /norestart /quiet /ceip off
 ```
 
 ### Windows 10 ISO
@@ -86,7 +86,7 @@ Current defaults are:
 
 Settings defined in ```environment_settings.xml``` will be used by these files:
 * ```PEScripts\WinRE_RestoreBackup.ps1```
-* ```Remove_NetworkBackup.ps1```
+* ```Remote_NetworkBackup.ps1```
 
 ## Building your custom WinPE Image
 
@@ -115,8 +115,8 @@ recoveries.
 You can use ```Get-Job``` from the PowerShell terminal to list the status of the backup job. If jobs are completing very
 quickly, you may want to verify that your settings are correct.
 
-__Because remote backups are made when a PC is booted into Windows, the backup image is not
-encrypted with BitLocker even if the PC being backed up is encrypted.__
+_Because remote backups are made when a PC is booted into Windows, the backup image is not
+encrypted with BitLocker even if the PC being backed up is encrypted._
 
 ## Booting your custom WinPE Image
 
