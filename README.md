@@ -53,6 +53,8 @@ You should already have a network file-share intended to store backup images.
 You will need credentials to connect to the file-share. It is recommended that you test the
 connection to your backup file share before you configure your environment settings.
 
+The ```netlogon``` service must be running on your backup file server.
+
 ## Preparing your build environment
 
 Once you have Windows ADK installed and a Windows 10 ISO downloaded, move the ISO to the
