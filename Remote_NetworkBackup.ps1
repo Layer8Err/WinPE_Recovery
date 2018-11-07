@@ -43,6 +43,8 @@ $backupBlock = [ScriptBlock]::Create({
         $encryptPass1 = [String]$cryptedPass | ConvertTo-SecureString -Key $key # Decrypt with key
         $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($encryptPass1) # rotate into store
         $backupPass = [String]([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)) # get string value
+        ## Verify local NetLogon service is running and start if it is not
+        if ((Get-Service -Name NetLogon).Status -ne "Running"){ Start-Service NetLogon }
         ## Backup to network
         WBADMIN START BACKUP -backupTarget:$backupLocation -user:$backupUser -password:$backupPass -include:$backupTgt -allCritical -quiet -noInheritAcl
     }
