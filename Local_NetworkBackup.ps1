@@ -5,7 +5,7 @@
 ###############################################################################################
 
 ### Read in environment_settings.xml to get Domain and Admin info
-cd $PSScriptRoot
+Set-Location $PSScriptRoot
 $localDir = $pwd.Path
 $settingsXMLFile = $localDir + '\' + 'environment_settings.xml'
 $xml = [xml](Get-Content $settingsXMLFile) # Read XML file
@@ -49,4 +49,4 @@ $backupBlock2 = [ScriptBlock]::Create($backupBlock.ToString() + "backupToServer 
 
 Write-Host "Backing up this PC ($env:COMPUTERNAME)..." -ForegroundColor Cyan
 $backupJobName = "$env:COMPUTERNAME" + '_backup'
-Invoke-Command -ScriptBlock $backupBlock2
+Invoke-Command -ScriptBlock $backupBlock2 -AsJob -JobName $backupJobName

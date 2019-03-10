@@ -23,6 +23,8 @@ function backupToServer {
     $securepassword = ConvertTo-SecureString $encryptedstring
     $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securepassword)
     $backupPass = [String]([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR))
+    ## Verify local NetLogon service is running and start if it is not
+    if ((Get-Service -Name NetLogon).Status -ne "Running"){ Start-Service NetLogon }
     ## Backup to network
     WBADMIN START BACKUP -backupTarget:$backupLocation -user:$backupUser -password:$backupPass -include:$backupTgt -allCritical -quiet -noInheritAcl
     [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)

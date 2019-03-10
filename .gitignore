@@ -6,11 +6,13 @@ Mount/install/
 Mount/recoveryiso/
 Mount/recoverymedia/
 Mount/winre/
+Mount/boot/
 
 # Windows images and configured binaries
 Bin/*.wim
 Bin/*.iso
 Bin/*.exe
+Bin/*.esd
 
 # Custom Drivers
 Bin/Drivers/

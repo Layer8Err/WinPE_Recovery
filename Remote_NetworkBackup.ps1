@@ -6,7 +6,7 @@
 ###############################################################################################
 
 ### Read in environment_settings.xml to get Domain and Admin info
-cd $PSScriptRoot
+Set-Location $PSScriptRoot
 $localDir = $pwd.Path
 $settingsXMLFile = $localDir + '\' + 'environment_settings.xml'
 $xml = [xml](Get-Content $settingsXMLFile) # Read XML file
