@@ -7,16 +7,17 @@
 $localDir = $pwd.Path
 $recoveryRoot = $localDir
 $adkPEPath = "${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs"
-$pathToBoot = $recoveryRoot + '\Bin\boot.wim' # path to boot.wim copied from flash drive
+$pathToBoot = $recoveryRoot + '\Bin\boot.wim' # path to boot.wim copied from flash drive (this is actually the wrong WIM) correct WIM contains setup.exe in ROOT
 $mountBootTgt = $recoveryRoot + '\Mount\boot' # path to mount boot.wim
-$recoveryScript = $recoveryRoot + '\Prompt_Local_NetworkBackup.ps1' # Path to powershell backup script
+$recoveryScript = $recoveryRoot + '\Prompt_Local_NetworkBackup.ps1' # Path to powershell backup script -- put in X:\sources\
 
 if (!(Test-Path -path $mountBootTgt)){
     Mkdir -Path $mountBootTgt
 }
 
 $bootindexes = DISM /Get-WimInfo /WimFile:$pathToBoot
-$peindex = 1 # Name: Microsoft Windows PE (x64)
+#$peindex = 1 # Name: Microsoft Windows PE (x64) -- try index 2?
+$peindex = 2 # We need to use index 2 to modify the recovery environment
 DISM /Mount-Wim /WimFile:$pathToBoot /Index:$peindex /MountDir:$mountBootTgt
 
 ## Load in PowerShell
@@ -63,7 +64,7 @@ Dism /Add-Package /Image:$mountBootTgt /PackagePath:"$adkPEPath\WinPE-EnhancedSt
 Dism /Add-Package /Image:$mountBootTgt /PackagePath:"$adkPEPath\en-us\WinPE-EnhancedStorage_en-us.cab"
 
 Write-Host "Copying over local_backup.ps1 script for out-of-band backups..." -ForegroundColor Cyan
-Copy-Item -Path $recoveryScript -Destination ($mountBootTgt + "\Windows\System32\local_backup.ps1")
+Copy-Item -Path $recoveryScript -Destination ($mountBootTgt + "\sources\local_backup.ps1")
 
 Write-Host "Committing changes to boot.wim..." -ForegroundColor Green
 DISM /Unmount-Wim /MountDir:$mountBootTgt /Commit
