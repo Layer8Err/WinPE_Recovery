@@ -4,6 +4,8 @@
 # or make backups / recoveries
 # Copy boot.wim from ESD-USB (H:) > sources to the Bin folder
 
+# Note: This method does NOT work for backups. WBADMIN will not create backups from Windows Recovery Environment
+
 $localDir = $pwd.Path
 $recoveryRoot = $localDir
 $adkPEPath = "${env:ProgramFiles(x86)}\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE_OCs"
