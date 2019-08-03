@@ -149,7 +149,7 @@ function backupMenu {
         $backupOK = $false
         try {
             [INT]$choice = Read-Host ">"
-            if (($choice -ne $null) -and ($choice -ge 1) -and ($choise -le $index)){
+            if (($choice -ne "") -and ($choice -ge 1) -and ($choice -le $index)){
                 $chosenID = $backupIDs[$choice - 1]
                 [String]$begin = Read-Host "Ready to begin image restore? [y/N]"
                 if ( ($begin.Trim().Substring(0,1).ToLower()) -eq 'y' ){
