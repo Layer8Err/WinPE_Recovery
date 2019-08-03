@@ -29,6 +29,10 @@ $backupPass = [String]([System.Runtime.InteropServices.Marshal]::PtrToStringAuto
 Write-Host "Getting Asset Tag for this PC..." -ForegroundColor Yellow
 $assetTag = (Get-WmiObject Win32_SystemEnclosure).SerialNumber.Trim()
 Write-Host "Asset Tag: $assetTag"
+$useDetectedAssetTag = Read-Host "Use detected Asset Tag as Computer Name? [Y/n]"
+if ($useDetectedAssetTag.Substring(0,1).ToLower() -eq 'n') {
+    $assetTag = Read-Host "Computer Name: "
+}
 # Authenticate with remote share
 Write-Host "Establishing connection with backup share $remoteShare" -ForegroundColor Yellow
 Start-Sleep -Seconds 5
