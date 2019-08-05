@@ -61,4 +61,11 @@ Start-Sleep -Seconds 5
 MakeWinPEMedia /ufd /f "$winPEBuildFolder" $flashDriveLetter
 Write-Host "Over-writing in the (likely) event that MakeWinPEMedia partially failed." -ForegroundColor Cyan
 xcopy ($winPEBuildFolder + "\media\*.*") /s /e /f /y ($flashDriveLetter + "\")
+
+Write-Host "Adding `"CreateBackup`" folder to flash drive for creating backups..." -ForegroundColor Cyan
+mkdir -Path ($flashDriveLetter + "\CreateBackup")
+Copy-Item -Path $settingsXMLFile -Destination ($flashDriveLetter + "\CreateBackup\environment_settings.xml")
+Copy-Item -Path ($localDir + "\Local_NetworkBackup.ps1") -Destination ($flashDriveLetter + "\CreateBackup\Local_NetworkBackup.ps1")
+Copy-Item -Path ($localDir + "\Bin\CreateBackup\StartBackup.bat") -Destination ($flashDriveLetter + "\CreateBackup\StartBackup.bat")
+
 Write-Host "...Done!" -ForegroundColor Yellow

@@ -49,4 +49,9 @@ $backupBlock2 = [ScriptBlock]::Create($backupBlock.ToString() + "backupToServer 
 
 Write-Host "Backing up this PC ($env:COMPUTERNAME)..." -ForegroundColor Cyan
 $backupJobName = "$env:COMPUTERNAME" + '_backup'
-Invoke-Command -ScriptBlock $backupBlock2 -AsJob -JobName $backupJobName
+
+# Run backup in foreground
+Invoke-Command -ScriptBlock $backupBlock2
+
+# Run backup in background as job
+#Invoke-Command -ScriptBlock $backupBlock2 -AsJob -JobName $backupJobName
