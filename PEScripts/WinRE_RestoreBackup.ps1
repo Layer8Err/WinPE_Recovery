@@ -31,7 +31,7 @@ $assetTag = (Get-WmiObject Win32_SystemEnclosure).SerialNumber.Trim()
 Write-Host "Asset Tag: $assetTag"
 $useDetectedAssetTag = Read-Host "Use detected Asset Tag as Computer Name? [Y/n]"
 if ($useDetectedAssetTag.Substring(0,1).ToLower() -eq 'n') {
-    $assetTag = Read-Host "Computer Name: "
+    $assetTag = Read-Host "Computer Name"
 }
 # Authenticate with remote share
 Write-Host "Establishing connection with backup share $remoteShare" -ForegroundColor Yellow
@@ -122,6 +122,8 @@ function recoverBackup {
         wbadmin start sysrecovery -version:$bakID -backuptarget:$remoteShare -machine:$assetTag -recreateDisks -quiet
     }
     # Reboot when finished with image recovery
+    Write-Host "Press ENTER to reboot" -ForegroundColor Red
+    pause
     Write-Host "Rebooting $assetTag..." -ForegroundColor Red
     Start-Sleep -Seconds 10
     wpeutil reboot

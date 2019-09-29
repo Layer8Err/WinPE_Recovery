@@ -77,6 +77,9 @@ When the custom WinPE image is created, drivers located in ```Bin\Drivers\``` wi
 injected into the final WinPE image. If you need to support any non-standard network or
 storage interfaces, you can place uncompressed driver files into this folder.
 
+_hint_: You can use the command ```Export-WindowsDriver -Online -Destination Bin\Drivers```
+to inject your currently installed drivers into the WinPE image
+
 ### Additional Configuration
 
 You may want to customize ```Make_WinPE_Recovery.ps1``` as needed before

@@ -74,19 +74,22 @@ if ( (Test-Path -Path $pathToISO) -eq $false){
         Write-Host "Extracted Windows image found at $pathToWIM!" -ForegroundColor Cyan
     }
     ########################################################
-
-    Write-Host -NoNewline "Mounting " -ForegroundColor Cyan
-    Write-Host -NoNewLine "$pathToWIM" -ForegroundColor White
-    Write-Host " to extract Windows Recovery Environment..." -ForegroundColor Cyan
-    DISM /Mount-Wim /WimFile:$pathToWIM /Index:1 /MountDir:$mountInstallTgt
-
-    Write-Host -NoNewLine "Copying Windows Recovery Environment to " -ForegroundColor Cyan
-    Write-Host "$imageStorageFolder" -ForegroundColor White
-    Copy-Item -Path ($mountInstallTgt + '\Windows\System32\Recovery\Winre.wim') -Destination $winRECopy -Force
-
-    Write-Host -NoNewline "Unmounting " -ForegroundColor Cyan
-    Write-Host "$pathToWIM" -ForegroundColor White
-    DISM /Unmount-Wim /MountDir:$mountInstallTgt /Discard
+    # Extract Windows Recovery Environment if it hasn't already been extracted
+    if (!(Test-Path ($winRECopy))){
+        Write-Host -NoNewline "Mounting " -ForegroundColor Cyan
+        Write-Host -NoNewLine "$pathToWIM" -ForegroundColor White
+        Write-Host " to extract Windows Recovery Environment..." -ForegroundColor Cyan
+        DISM /Mount-Wim /WimFile:$pathToWIM /Index:1 /MountDir:$mountInstallTgt
+        
+        Write-Host -NoNewLine "Copying Windows Recovery Environment to " -ForegroundColor Cyan
+        Write-Host "$imageStorageFolder" -ForegroundColor White
+        Copy-Item -Path ($mountInstallTgt + '\Windows\System32\Recovery\Winre.wim') -Destination $winRECopy -Force
+        Write-Host -NoNewline "Unmounting " -ForegroundColor Cyan
+        Write-Host "$pathToWIM" -ForegroundColor White
+        DISM /Unmount-Wim /MountDir:$mountInstallTgt /Discard
+    } else {
+        Write-Host "Founding existing Windows Recovery Environment" -ForegroundColor Green
+    }
 
     Write-Host "Mounting WinRE for customization..." -ForegroundColor Cyan
     DISM /Mount-Wim /WimFile:$winRECopy /Index:1 /MountDir:$mountWinRETgt
