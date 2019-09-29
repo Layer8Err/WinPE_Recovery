@@ -13,6 +13,7 @@ Bin/*.wim
 Bin/*.iso
 Bin/*.exe
 Bin/*.esd
+Bin/Setup/*.exe
 
 # Custom Drivers
 Bin/Drivers/

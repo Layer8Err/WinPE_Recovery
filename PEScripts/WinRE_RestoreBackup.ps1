@@ -34,7 +34,11 @@ if ($useDetectedAssetTag.Substring(0,1).ToLower() -eq 'n') {
     $assetTag = Read-Host "Computer Name"
 }
 # Authenticate with remote share
-Write-Host "Establishing connection with backup share $remoteShare" -ForegroundColor Yellow
+Write-Host "Establishing connection with backup share $remoteShare ..." -ForegroundColor Yellow
+$shareSrv = $remoteShare.Split("\")[2]
+ping -n 4 $shareSrv
+#Write-Host $remoteShare -ForegroundColor Green
+#Write-Host $backupUser -ForegroundColor Green
 Start-Sleep -Seconds 5
 net use Z: $remoteShare /User:$backupUser $backupPass
 # Grab the backup versions for this machine
@@ -118,8 +122,8 @@ function recoverBackup {
         Write-Host "Recovering to existing partitions..." -ForegroundColor Cyan
         wbadmin start sysrecovery -version:$bakID -backuptarget:$remoteShare -machine:$assetTag -quiet
     } else {
-        Write-Host "Recovering and recreating disk partitions..." -ForegroundColor Cyan
-        wbadmin start sysrecovery -version:$bakID -backuptarget:$remoteShare -machine:$assetTag -recreateDisks -quiet
+        Write-Host "Recovering and RECREATING disk partitions..." -ForegroundColor Yellow
+        wbadmin start sysrecovery -version:$bakID -backuptarget:$remoteShare -machine:$assetTag -recreateDisks -restoreAllVolumes -quiet
     }
     # Reboot when finished with image recovery
     Write-Host "Press ENTER to reboot" -ForegroundColor Red
